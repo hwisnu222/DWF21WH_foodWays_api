@@ -17,6 +17,9 @@ const {
 } = require("../controllers/product");
 
 // route controller
+// user route
 router.get("/", index);
+router.get("/users", getAllUsers);
+router.get("/users/:id", deleteUser);
 
 module.exports = router;
