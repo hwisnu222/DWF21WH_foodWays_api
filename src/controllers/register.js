@@ -32,7 +32,7 @@ exports.registration = async (req, res) => {
         role: register.role,
       },
     };
-    console.log("hello");
+
     response.ok(result, res);
   } catch (error) {
     response.error(error, res);

@@ -26,7 +26,7 @@ router.delete("/users/:id", deleteUser);
 router.get("/products", getAllProduct);
 router.get("/products/:id", getProductByPartner);
 router.get("/product/:id", getDetailProduct);
-router.post("/product/:id", addBook);
+router.post("/product", addBook);
 router.put("/product/:id", editBook);
 router.delete("/product/:id", deleteProduct);
 

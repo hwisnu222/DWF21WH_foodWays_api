@@ -6,7 +6,8 @@ exports.ok = (result, res) => {
     data: result,
   };
 
-  res.send(data);
+  res.json(data);
+  res.end();
 };
 
 exports.error = (error, res) => {
@@ -15,5 +16,6 @@ exports.error = (error, res) => {
     data: error,
   };
 
-  res.send(data);
+  res.json(data);
+  res.end();
 };

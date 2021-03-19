@@ -63,7 +63,16 @@ exports.getDetailProduct = async (req, res) => {
     const detailProductPartner = await Product.findOne({
       include: {
         model: User,
-        attributes: { exclude: ["createdAt", "updatedAt", "image", "role"] },
+        attributes: {
+          exclude: [
+            "createdAt",
+            "updatedAt",
+            "image",
+            "role",
+            "password",
+            "gender",
+          ],
+        },
       },
       where: {
         id: id,
@@ -81,16 +90,113 @@ exports.getDetailProduct = async (req, res) => {
 };
 
 exports.addBook = async (req, res) => {
+  console.log("registration");
   try {
-  } catch (error) {}
+    const { title, price, image } = req.body;
+    const userId = 33;
+
+    const Book = await Product.create({
+      title,
+      price,
+      image,
+      userId,
+    });
+
+    const idProduct = Book.id;
+    const productDetail = await Product.findOne({
+      include: {
+        model: User,
+        attributes: {
+          exclude: [
+            "createdAt",
+            "updatedAt",
+            "image",
+            "role",
+            "password",
+            "gender",
+          ],
+        },
+      },
+      where: {
+        id: idProduct,
+      },
+      attributes: { exclude: ["createdAt", "updatedAt", "userId", "UserId"] },
+    });
+
+    const result = {
+      product: productDetail,
+    };
+
+    response.ok(result, res);
+  } catch (error) {
+    console.log(error);
+    response.error(error);
+  }
 };
 
-exports.editBook = (req, res) => {
+exports.editBook = async (req, res) => {
   try {
-  } catch (error) {}
+    const { id } = req.params;
+    const { title, price, image } = req.body;
+
+    const editBook = await Product.update(
+      {
+        title,
+        price,
+        image,
+      },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+
+    const idProduct = editBook;
+    const productDetail = await Product.findOne({
+      include: {
+        model: User,
+        attributes: {
+          exclude: [
+            "createdAt",
+            "updatedAt",
+            "image",
+            "role",
+            "password",
+            "gender",
+          ],
+        },
+      },
+      where: {
+        title,
+      },
+      attributes: { exclude: ["createdAt", "updatedAt", "userId", "UserId"] },
+    });
+    console.log(idProduct[0]);
+
+    const result = {
+      product: productDetail,
+    };
+
+    response.ok(result, res);
+  } catch (error) {
+    response.error(error, res);
+    console.log(error);
+  }
 };
 
-exports.deleteProduct = (req, res) => {
+exports.deleteProduct = async (req, res) => {
   try {
-  } catch (error) {}
+    const { id } = req.params;
+    const deleteProduct = await Product.destroy({ where: { id } });
+
+    const result = {
+      id,
+    };
+
+    response.ok(result, res);
+  } catch (error) {
+    response.error(error, res);
+    console.log(error);
+  }
 };
