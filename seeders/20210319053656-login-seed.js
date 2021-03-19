@@ -13,37 +13,29 @@ module.exports = {
      */
 
     await queryInterface.bulkInsert(
-      "Products",
+      "Logins",
       [
         {
-          title: "bakso",
-          price: 3000,
-          image: "upload/images/image.png",
-          userId: 1,
+          fullName: "james Cameron",
+          email: "james@mail.com",
+          password: "jamespass",
+          token: "kfkdhhfk",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          title: "sate",
-          price: 4000,
-          image: "upload/images/image.png",
-          userId: 2,
+          fullName: "john gorg",
+          email: "john@mail.com",
+          password: "johnpass",
+          token: "fdasjfhsajdf",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          title: "kare",
-          price: 5000,
-          image: "upload/images/image.png",
-          userId: 3,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          title: "soto",
-          price: 2000,
-          image: "upload/images/image.png",
-          userId: 4,
+          fullName: "angel",
+          email: "angel@mail.com",
+          password: "angelpass",
+          token: "awrarar",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -59,6 +51,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete("Product", null, {});
+
+    await queryInterface.bulkDelete("Logins", null, "");
   },
 };
