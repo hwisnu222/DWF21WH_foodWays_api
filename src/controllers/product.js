@@ -7,9 +7,13 @@ exports.getAllProduct = async (req, res) => {
     let productsData = await Product.findAll({
       include: {
         model: User,
-        attributes: { exclude: ["createdAt", "updatedAt"] },
+        attributes: {
+          exclude: ["gender", "password", "createdAt", "updatedAt"],
+        },
       },
-      attributes: { exclude: ["createdAt", "updatedAt", "userId", "UserId"] },
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "userId", "UserId"],
+      },
     });
 
     const productResult = JSON.parse(JSON.stringify(productsData)).map(
@@ -76,7 +80,7 @@ exports.getDetailProduct = async (req, res) => {
   }
 };
 
-exports.addBook = (req, res) => {
+exports.addBook = async (req, res) => {
   try {
   } catch (error) {}
 };

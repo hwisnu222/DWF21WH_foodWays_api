@@ -19,7 +19,7 @@ module.exports = {
           title: "bakso",
           price: 3000,
           image: "upload/images/image.png",
-          userId: 1,
+          userId: 33,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -27,7 +27,7 @@ module.exports = {
           title: "sate",
           price: 4000,
           image: "upload/images/image.png",
-          userId: 2,
+          userId: 34,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -35,7 +35,7 @@ module.exports = {
           title: "kare",
           price: 5000,
           image: "upload/images/image.png",
-          userId: 3,
+          userId: 35,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -43,7 +43,7 @@ module.exports = {
           title: "soto",
           price: 2000,
           image: "upload/images/image.png",
-          userId: 4,
+          userId: 36,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -59,6 +59,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete("Product", null, {});
+    await queryInterface.bulkDelete("Products", null, {});
   },
 };

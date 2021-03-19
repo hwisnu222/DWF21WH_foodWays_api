@@ -9,7 +9,7 @@ exports.getAllUsers = async (req, res) => {
   try {
     const userData = await User.findAll({
       attributes: {
-        exclude: ["createdAt", "updatedAt"],
+        exclude: ["gender", "password", "createdAt", "updatedAt"],
       },
     });
 
@@ -27,11 +27,12 @@ exports.deleteUser = (req, res) => {
   try {
     const deleteUser = User.destroy({
       where: {
-        id,
+        id: id,
       },
     });
+    const result = { id: id };
 
-    response.ok(deleteUser, res);
+    response.ok(result, res);
   } catch (error) {
     response.error("can't delete user", res);
   }

@@ -27,7 +27,9 @@ module.exports = {
         },
         {
           fullName: "John gorg",
+          gender: "laki laki",
           email: "john@mail.com",
+          password: "johnpass",
           phone: "65756756",
           location: "0000909,920932",
           image: "upload/images/image.png",
@@ -37,7 +39,9 @@ module.exports = {
         },
         {
           fullName: "Angel Hugh",
+          gender: "perempuan",
           email: "angel@mail.com",
+          password: "angelpass",
           phone: "49949494",
           location: "0384,920932",
           image: "upload/images/image.png",
@@ -47,7 +51,9 @@ module.exports = {
         },
         {
           fullName: "Nort Jon",
+          gender: "laki laki",
           email: "nort@mail.com",
+          password: "nortpass",
           phone: "32081298",
           location: "1019301,920932",
           image: "upload/images/image.png",

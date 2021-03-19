@@ -36,5 +36,6 @@ router.post("/login", login);
 // login
 
 //registration
+router.post("/register", registration);
 
 module.exports = router;
