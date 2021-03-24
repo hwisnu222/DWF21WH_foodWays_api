@@ -1,21 +1,29 @@
 "use strict";
 
-exports.ok = (result, res) => {
+exports.ok = (res, result, code, message) => {
   const data = {
     status: "success",
+    message: message,
     data: result,
   };
 
-  res.json(data);
-  res.end();
+  res.status(code).send(data);
 };
 
-exports.error = (error, res) => {
+exports.error = (res, error, code, message) => {
   const data = {
     status: "failed",
+    message: message,
     data: error,
   };
 
-  res.json(data);
-  res.end();
+  res.status(code).send(data);
+};
+
+exports.authError = (result, res) => {
+  const data = {
+    status: "failed",
+    message: result,
+  };
+  res.status(401).send(data);
 };

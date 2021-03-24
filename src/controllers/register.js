@@ -19,6 +19,8 @@ exports.registration = async (req, res) => {
       password: hashPassword,
       phone: phone,
       role: role,
+      image: process.env.URL_IMAGE_DEFAULT,
+      location: process.env.LOCATION,
     });
 
     const secretKey = process.env.SECRET_KEY;
@@ -33,9 +35,9 @@ exports.registration = async (req, res) => {
       },
     };
 
-    response.ok(result, res);
+    response.ok(res, result, 200, "successfully registered user");
   } catch (error) {
-    response.error(error, res);
+    response.error(res, error, 401, "failed register user");
     console.log(error);
   }
 };

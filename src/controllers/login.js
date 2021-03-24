@@ -36,9 +36,9 @@ exports.login = async (req, res) => {
       token,
     };
 
-    response.ok(result, res);
+    response.ok(res, result, 200, "success login user");
   } catch (error) {
     console.log(error);
-    response.error(error, res);
+    response.error(res, error, 401, "error on the server!!!");
   }
 };

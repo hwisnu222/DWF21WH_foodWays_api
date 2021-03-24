@@ -29,17 +29,17 @@ exports.getAllProduct = async (req, res) => {
     );
     const result = { products: productResult };
 
-    response.ok(result, res);
+    response.ok(res, result, 200, "successfully get all product");
   } catch (error) {
     console.log(error);
-    response.error(error, res);
+    response.error(res, error, 400, "can't get all product!!");
   }
 };
 
 exports.getProductByPartner = async (req, res) => {
   const { id } = req.params;
   try {
-    const productPartner = await Product.findOne({
+    const productPartner = await Product.findAll({
       where: {
         userId: id,
       },
@@ -50,9 +50,15 @@ exports.getProductByPartner = async (req, res) => {
       product: productPartner,
     };
 
-    response.ok(result, res);
+    if (productPartner) {
+      console.log(productPartner);
+      response.ok(res, result, 200, "succesfully get product by partner");
+    } else {
+      response.ok(res, [], 404, "product is not exist");
+    }
   } catch (error) {
-    response.error(error, res);
+    response.error(res, error, 401, "can't get product by partner");
+    console.log(error);
   }
 };
 
@@ -78,14 +84,21 @@ exports.getDetailProduct = async (req, res) => {
         id: id,
       },
       attributes: { exclude: ["createdAt", "updatedAt", "userId", "UserId"] },
+      raw: true,
+      nest: true,
     });
 
+    const detailUser = detailProductPartner.User;
+    delete detailProductPartner.User;
+
     const result = {
-      product: detailProductPartner,
+      product: { ...detailProductPartner, user: detailUser },
     };
-    response.ok(result, res);
+
+    response.ok(res, result, 200, "successfully get product");
   } catch (error) {
-    response.error(error, res);
+    response.error(res, error, 401, "can't get product");
+    console.log(error);
   }
 };
 
@@ -93,7 +106,7 @@ exports.addBook = async (req, res) => {
   console.log("registration");
   try {
     const { title, price, image } = req.body;
-    const userId = 33;
+    const userId = req.userId;
 
     const Book = await Product.create({
       title,
@@ -127,10 +140,10 @@ exports.addBook = async (req, res) => {
       product: productDetail,
     };
 
-    response.ok(result, res);
+    response.ok(res, result, 200, "successfully add product");
   } catch (error) {
     console.log(error);
-    response.error(error);
+    response.error(res, error, 401, "failed for add product");
   }
 };
 
@@ -178,7 +191,7 @@ exports.editBook = async (req, res) => {
       product: productDetail,
     };
 
-    response.ok(result, res);
+    response.ok(res, result, 200, "successfully update product");
   } catch (error) {
     response.error(error, res);
     console.log(error);
@@ -187,16 +200,28 @@ exports.editBook = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   try {
+    const userId = req.userId;
     const { id } = req.params;
+
+    // check user product
+    const checkProductId = await Product.findOne({
+      where: { id },
+    });
+    if (!checkProductId) {
+      return response.ok(res, [], 200, "product is not exist");
+    } else if (userId != checkProductId.userId) {
+      return response.ok(res, [], 200, "you can't delete this product");
+    }
+
     const deleteProduct = await Product.destroy({ where: { id } });
 
     const result = {
       id,
     };
 
-    response.ok(result, res);
+    response.ok(res, result, 200, "successfully delete product");
   } catch (error) {
-    response.error(error, res);
-    console.log(error);
+    response.error(res, error, 401, "failed delete user");
+    console.log(req.userId);
   }
 };

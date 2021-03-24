@@ -10,9 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasOne(models.Product);
+      User.hasMany(models.Product);
+      User.hasMany(models.Transaction);
+
+      // //test
+      // foreignkey mengacu pada userid di tabel Transaction
+      // User.hasMany(models.Transaction, {
+      //   foreignKey: { name: "userId" },
+      // });
+      // User.hasMany(models.Transaction, { foreignKey: { name: "orderId" } });
     }
   }
+
   User.init(
     {
       fullName: DataTypes.STRING,
