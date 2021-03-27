@@ -14,10 +14,10 @@ exports.checkRole = {
       if (user.role == "partner") {
         next();
       } else {
-        response.error("role not allowed!!!", res);
+        response.error(res, null, 200, "role not allowed!!!");
       }
     } catch (error) {
-      response.error("can't verify role", res);
+      response.error(res, null, 200, "can't verify role!");
     }
   },
 
@@ -32,10 +32,10 @@ exports.checkRole = {
       if (user.role == "user") {
         next();
       } else {
-        response.error("role not allowed!!!", res);
+        response.error(res, null, 200, "role not allowed!!!");
       }
     } catch (error) {
-      response.error("can't verify role", res);
+      response.error(res, null, 200, "can't verify role!");
     }
   },
 };

@@ -1,5 +1,6 @@
 // import model below
 const { Product, User } = require("../../models");
+const Joi = require("joi");
 const response = require("../response");
 // function for controller
 exports.getAllProduct = async (req, res) => {
@@ -7,6 +8,7 @@ exports.getAllProduct = async (req, res) => {
     let productsData = await Product.findAll({
       include: {
         model: User,
+        as: "user",
         attributes: {
           exclude: ["gender", "password", "createdAt", "updatedAt"],
         },
@@ -69,6 +71,7 @@ exports.getDetailProduct = async (req, res) => {
     const detailProductPartner = await Product.findOne({
       include: {
         model: User,
+        as: "user",
         attributes: {
           exclude: [
             "createdAt",
@@ -103,15 +106,25 @@ exports.getDetailProduct = async (req, res) => {
 };
 
 exports.addBook = async (req, res) => {
-  console.log("registration");
   try {
-    const { title, price, image } = req.body;
     const userId = req.userId;
+    const { title, price } = req.body;
+    const imageName = req.files.imageFile[0].filename;
+    const url = process.env.URL;
+
+    const schemaLogin = Joi.object({
+      title: Joi.string().min(3).max(30).required(),
+      price: Joi.number().min(3).max(50).required(),
+    });
+
+    const { error } = schemaLogin.validate({ title, price });
+
+    if (error) return response.error(res, null, 200, error.details[0].message);
 
     const Book = await Product.create({
       title,
       price,
-      image,
+      image: url + imageName,
       userId,
     });
 
@@ -119,6 +132,7 @@ exports.addBook = async (req, res) => {
     const productDetail = await Product.findOne({
       include: {
         model: User,
+        as: "user",
         attributes: {
           exclude: [
             "createdAt",
@@ -169,6 +183,7 @@ exports.editBook = async (req, res) => {
     const productDetail = await Product.findOne({
       include: {
         model: User,
+        as: "user",
         attributes: {
           exclude: [
             "createdAt",
