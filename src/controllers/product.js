@@ -1,7 +1,9 @@
 // import model below
 const { Product, User } = require("../../models");
 const Joi = require("joi");
+const fs = require("fs");
 const response = require("../response");
+
 // function for controller
 exports.getAllProduct = async (req, res) => {
   try {
@@ -114,10 +116,11 @@ exports.addBook = async (req, res) => {
 
     const schemaLogin = Joi.object({
       title: Joi.string().min(3).max(30).required(),
-      price: Joi.number().min(3).max(50).required(),
+      price: Joi.number().min(3).required(),
     });
 
     const { error } = schemaLogin.validate({ title, price });
+    console.log(imageName);
 
     if (error) return response.error(res, null, 200, error.details[0].message);
 
@@ -228,7 +231,20 @@ exports.deleteProduct = async (req, res) => {
       return response.ok(res, [], 200, "you can't delete this product");
     }
 
+    const url = process.env.URL;
+    const imageName = checkProductId.image.replace(url, "");
+    console.log(imageName);
+
     const deleteProduct = await Product.destroy({ where: { id } });
+
+    // delete file
+    fs.unlink(`./uploads/${imageName}`, (err) => {
+      if (err) {
+        throw err;
+      }
+
+      console.log("File is deleted.");
+    });
 
     const result = {
       id,

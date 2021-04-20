@@ -3,6 +3,7 @@
 // import model below
 const { User } = require("../../models/");
 const bcrypt = require("bcrypt");
+const Joi = require("joi");
 const response = require("../response");
 
 // function for controller
@@ -48,7 +49,6 @@ exports.getPartner = async (req, res) => {
   try {
     const userData = await User.findAll({
       attributes: ["id", "fullName", "image"],
-      offset: 4,
       limit: 4,
       where: { role: "partner" },
     });
@@ -62,17 +62,34 @@ exports.getPartner = async (req, res) => {
 };
 
 // edit user
-exports.updateUser = (req, res) => {
+exports.updateUser = async (req, res) => {
+  console.log("update");
   const userId = req.userId;
-  const { fullName, gender, email, phone, location } = req.body;
+  const { fullName, email, phone, location } = req.body;
+
   const imageName = req.files.imageFile[0].filename;
   const url = process.env.URL;
 
   try {
-    const updateUser = User.update(
+    const schemaLogin = Joi.object({
+      fullName: Joi.string().min(3).max(30).required(),
+      email: Joi.string().email().min(3).max(30).required(),
+      phone: Joi.number().min(3).required(),
+      location: Joi.string().min(3).required(),
+    });
+
+    const { error } = schemaLogin.validate({
+      fullName,
+      email,
+      phone,
+      location,
+    });
+
+    if (error) return response.error(res, null, 200, error.details[0].message);
+
+    const updateUser = await User.update(
       {
         fullName,
-        gender,
         email,
         phone,
         location,
@@ -88,6 +105,7 @@ exports.updateUser = (req, res) => {
 
     response.ok(res, result, 200, "successfully update user");
   } catch (error) {
+    console.log("error", error);
     response.error(res, null, 401, "can't update user");
   }
 };

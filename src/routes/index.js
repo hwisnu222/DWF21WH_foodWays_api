@@ -49,7 +49,7 @@ router.delete("/users/:id", authentication, deleteUser); // id user/partner
 
 // products
 router.get("/products", authentication, partner, getAllProduct);
-router.get("/products/:id", authentication, partner, getProductByPartner);
+router.get("/products/:id", getProductByPartner);
 router.get("/product/:id", authentication, partner, getDetailProduct);
 router.post(
   "/product",

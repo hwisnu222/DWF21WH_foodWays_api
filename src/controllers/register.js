@@ -5,9 +5,9 @@ const jwt = require("jsonwebtoken");
 const response = require("../response");
 
 // function for controller
-exports.registration = async (req, res) => {
+exports.Registration = async (req, res) => {
   try {
-    const { fullName, gender, email, password, phone, role } = req.body;
+    const { fullName, email, password } = req.body;
 
     const saltHashStrength = 10;
     const hashPassword = await bcrypt.hash(password, saltHashStrength);
@@ -30,6 +30,7 @@ exports.registration = async (req, res) => {
       user: {
         id: register.id,
         fullName: register.fullName,
+        email: register.email,
         token: token,
         role: register.role,
       },

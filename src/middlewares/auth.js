@@ -6,7 +6,7 @@ exports.authentication = (req, res, next) => {
     !(header = req.header("Authorization")) ||
     !(token = header.replace("Bearer ", ""))
   ) {
-    return response.authError("Access Denied!!!", res);
+    return response.error(res, null, 200, "Access Denied!!");
   }
 
   try {
@@ -17,6 +17,6 @@ exports.authentication = (req, res, next) => {
 
     next();
   } catch (error) {
-    response.authError("can't verify token", res);
+    return response.error(res, null, 400, "can't verify token");
   }
 };

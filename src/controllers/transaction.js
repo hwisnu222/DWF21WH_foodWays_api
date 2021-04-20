@@ -5,6 +5,7 @@ const response = require("../response");
 // function for controller
 exports.getAllTransaction = async (req, res) => {
   const userId = req.userId;
+
   try {
     const allTransaction = await Transaction.findAll({
       subQuery: false,
@@ -187,7 +188,7 @@ exports.getUserTransaction = async (req, res) => {
   try {
     const userId = req.userId;
 
-    const getTransaction = await Transaction.findOne({
+    const getTransaction = await Transaction.findAll({
       include: [
         {
           model: User,
